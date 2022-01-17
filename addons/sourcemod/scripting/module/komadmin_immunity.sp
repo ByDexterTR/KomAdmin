@@ -31,7 +31,7 @@ public void OnPluginStart()
 
 public Action ListenerKick(int client, const char[] command, int argc)
 {
-	if (Immunity_kick.BoolValue)
+	if (!Immunity_kick.BoolValue)
 	{
 		char Arg[256];
 		GetCmdArgString(Arg, 256);
@@ -45,7 +45,7 @@ public Action ListenerKick(int client, const char[] command, int argc)
 
 public Action ListenerBan(int client, const char[] command, int argc)
 {
-	if (Immunity_ban.BoolValue)
+	if (!Immunity_ban.BoolValue)
 	{
 		char Arg[256];
 		GetCmdArgString(Arg, 256);
