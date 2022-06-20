@@ -31,30 +31,31 @@ public void OnPluginStart()
 
 public Action ListenerKick(int client, const char[] command, int argc)
 {
-	if (!Immunity_kick.BoolValue)
+	if (!Immunity_kick.BoolValue && IsClientKa(client) && CheckCommandAccess(client, "sm_ban", ADMFLAG_KICK))
 	{
-		char Arg[256];
-		GetCmdArgString(Arg, 256);
 		SetAdminImmunityLevel(GetUserAdmin(client), Oldim);
-		ClientCommand(client, "%s %s", command, Arg);
-		SetAdminImmunityLevel(GetUserAdmin(client), Immunity.IntValue);
-		return Plugin_Stop;
+		CreateTimer(0.3, Backup, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
 	}
 	return Plugin_Continue;
 }
 
 public Action ListenerBan(int client, const char[] command, int argc)
 {
-	if (!Immunity_ban.BoolValue)
+	if (!Immunity_ban.BoolValue && IsClientKa(client) && CheckCommandAccess(client, "sm_ban", ADMFLAG_BAN))
 	{
-		char Arg[256];
-		GetCmdArgString(Arg, 256);
 		SetAdminImmunityLevel(GetUserAdmin(client), Oldim);
-		ClientCommand(client, "%s %s", command, Arg);
-		SetAdminImmunityLevel(GetUserAdmin(client), Immunity.IntValue);
-		return Plugin_Stop;
+		CreateTimer(0.3, Backup, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
 	}
 	return Plugin_Continue;
+}
+
+public Action Backup(Handle timer, int userid)
+{
+	int client = GetClientOfUserId(client);
+	if (IsClientInGame(client) && IsClientKa(client))
+	{
+		SetAdminImmunityLevel(GetUserAdmin(client), Immunity.IntValue);
+	}
 }
 
 public void OnKomAdminCreated(int client)
